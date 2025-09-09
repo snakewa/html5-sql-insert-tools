@@ -2,6 +2,8 @@
 
 English | [中文说明](README.zh.md)
 
+Free online SQL to JSON/Table converter – paste SQL, get JSON or HTML instantly.
+
 A lightweight web tool to convert SQL INSERT statements into JSON and a rendered HTML table. Supports multiple statements, schema inference from CREATE TABLE, inline validation, JSON previews, downloads, and more.
 
 Note: This is a 100% client-side web app (pure HTML/JS). It requires no backend and works perfectly on GitHub Pages.
@@ -16,6 +18,22 @@ Note: This is a 100% client-side web app (pure HTML/JS). It requires no backend 
 ## Live Demo
 
 - URL: https://snakewa.github.io/html5-sql-insert-tools/
+
+## Why 
+
+- Zero setup: paste SQL, convert directly in the browser. No DB server required.
+- Multiple outputs: JSON for APIs, HTML tables for reports/dashboards.
+- Easy updates: generate UPDATE statements from selected rows for quick fixes.
+- Education-friendly: visualize how SQL maps to JSON/HTML.
+- Offline-ready: pure HTML5/JavaScript, runs anywhere, ideal for GitHub Pages.
+
+## Support (Buy Me a Coffee)
+
+Hi! I built this free tool to quickly turn SQL into JSON or HTML tables. If it saved you time, consider buying me a coffee—your support helps me improve and add features!
+
+<a href="https://www.buymeacoffee.com/snakewa" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="173">
+  </a>
 
 ## Features
 
@@ -112,11 +130,3 @@ Use the app locally without any server:
 ## License
 
 MIT
-
-## Support
-
-If this tool helps you, consider buying me a coffee ☕️
-
-<a href="https://www.buymeacoffee.com/snakewa" target="_blank">
-  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="173">
-  </a>

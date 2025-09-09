@@ -2,6 +2,8 @@
 
 [English README](README.md) | 中文说明
 
+免费在线 SQL 转 JSON/表格 转换器 —— 粘贴 SQL，立即得到 JSON 或 HTML。
+
 一个轻量级 Web 工具，用于将 SQL INSERT 语句转换为 JSON 与可视化 HTML 表格。支持多语句、从 CREATE TABLE 推断列名、内联校验、JSON 预览、下载等功能。
 
 说明：本项目为 100% 纯前端（纯 HTML/JS），无需后端，适合 GitHub Pages 静态托管。
@@ -16,6 +18,22 @@
 ## 在线演示
 
 - 网址：<https://snakewa.github.io/html5-sql-insert-tools/>
+
+## 为什么
+
+- 零配置：直接在浏览器粘贴 SQL 并转换，无需数据库服务器。
+- 多种输出：面向 API 的 JSON，或用于报表/看板的 HTML 表格。
+- 快速更新：从所选行生成 UPDATE 语句，便于小范围修正数据。
+- 适合教学：直观展示 SQL 如何映射为 JSON/HTML。
+- 离线可用：纯 HTML5/JavaScript，适合 GitHub Pages，本地也能运行。
+
+## 支持（Buy Me a Coffee）
+
+我做这个免费工具是为了更快地把 SQL 转成 JSON 或 HTML 表格。如果它帮你节省了时间，欢迎请我喝杯咖啡，你的支持能帮助我继续改进与开发新功能！
+
+<a href="https://www.buymeacoffee.com/snakewa" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="173">
+</a>
 
 ## 功能特点
 
@@ -113,10 +131,4 @@ INSERT INTO products VALUES
 
 MIT
 
-## 支持
-
-如果这个工具对你有帮助，欢迎请我喝杯咖啡 ☕️
-
-<a href="https://www.buymeacoffee.com/snakewa" target="_blank">
-  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="173">
-</a>
+ 
