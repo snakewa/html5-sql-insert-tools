@@ -6,6 +6,17 @@ A lightweight web tool to convert SQL INSERT statements into JSON and a rendered
 
 Note: This is a 100% client-side web app (pure HTML/JS). It requires no backend and works perfectly on GitHub Pages.
 
+[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-2ea44f?logo=github)](https://snakewa.github.io/html5-sql-insert-tools/)
+![Static](https://img.shields.io/badge/Client--side-Static-blue)
+![Language](https://img.shields.io/badge/i18n-EN%2FZH-informational)
+![Theme](https://img.shields.io/badge/Theme-Light%20%7C%20Dark%20%7C%20System-7952B3)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Last Commit](https://img.shields.io/github/last-commit/snakewa/html5-sql-insert-tools)
+
+## Live Demo
+
+- URL: https://snakewa.github.io/html5-sql-insert-tools/
+
 ## Features
 
 - Robust parsing of `INSERT INTO ... VALUES (...), (...);` across multiple tables
@@ -88,6 +99,24 @@ Produces grouped JSON:
 - All logic is in `script.js`; UI is in `index.html`.
 - No external build tools required. Bootstrap CDN is used for styling.
 
+## Offline Usage (Download ZIP)
+
+Use the app locally without any server:
+
+1. Go to the repository page: https://github.com/snakewa/html5-sql-insert-tools
+2. Click the green "Code" button → "Download ZIP".
+3. Extract the ZIP to a folder on your computer.
+4. Open the extracted folder and double‑click `index.html` to launch in your browser.
+5. Paste your SQL and click Convert.
+
 ## License
 
 MIT
+
+## Support
+
+If this tool helps you, consider buying me a coffee ☕️
+
+<a href="https://www.buymeacoffee.com/snakewa" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="173">
+  </a>

@@ -6,6 +6,17 @@
 
 说明：本项目为 100% 纯前端（纯 HTML/JS），无需后端，适合 GitHub Pages 静态托管。
 
+[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-2ea44f?logo=github)](https://snakewa.github.io/html5-sql-insert-tools/)
+![Static](https://img.shields.io/badge/Client--side-Static-blue)
+![Language](https://img.shields.io/badge/i18n-EN%2FZH-informational)
+![Theme](https://img.shields.io/badge/Theme-Light%20%7C%20Dark%20%7C%20System-7952B3)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Last Commit](https://img.shields.io/github/last-commit/snakewa/html5-sql-insert-tools)
+
+## 在线演示
+
+- 网址：<https://snakewa.github.io/html5-sql-insert-tools/>
+
 ## 功能特点
 
 - 可靠解析 `INSERT INTO ... VALUES (...), (...);`，支持多表多语句
@@ -88,6 +99,24 @@ INSERT INTO products VALUES
 - 逻辑在 `script.js`，界面在 `index.html`。
 - 无需构建工具；样式使用 Bootstrap CDN。
 
+## 离线使用（下载 ZIP）
+
+无需服务器，本地即可运行：
+
+1. 仓库地址：<https://github.com/snakewa/html5-sql-insert-tools>
+2. 点击绿色 “Code” 按钮 → “Download ZIP”。
+3. 解压 ZIP 到本地任意文件夹。
+4. 打开该文件夹，直接双击 `index.html` 即可在浏览器中使用。
+5. 粘贴 SQL，点击 Convert 开始转换。
+
 ## 许可
 
 MIT
+
+## 支持
+
+如果这个工具对你有帮助，欢迎请我喝杯咖啡 ☕️
+
+<a href="https://www.buymeacoffee.com/snakewa" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="48" width="173">
+</a>
