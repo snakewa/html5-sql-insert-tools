@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const outputModeSel = document.getElementById('outputMode');
     const langSelect = document.getElementById('langSelect');
     const saveInputToggle = document.getElementById('saveInputToggle');
+    const themeSelect = document.getElementById('themeSelect');
     const downloadJsonBtn = document.getElementById('downloadJsonBtn');
     const downloadCsvBtn = document.getElementById('downloadCsvBtn');
     const expandJsonToggle = document.getElementById('expandJsonToggle');
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const I18N = {
         en: {
             langLabel: 'Language',
+            themeLabel: 'Theme',
             title: 'SQL to JSON/Table Converter',
             inputSectionTitle: 'Input & Actions',
             sqlLabel: 'Paste your SQL here (you can include CREATE TABLE and multiple INSERT statements):',
@@ -59,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         zh: {
             langLabel: '语言',
+            themeLabel: '主题',
             title: 'SQL 插入语句 ➜ JSON 与 HTML 表格',
             inputSectionTitle: '输入与操作',
             sqlLabel: '在此粘贴 SQL（可包含 CREATE TABLE 与多条 INSERT 语句）：',
@@ -97,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function applyI18n() {
         const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
         setText('langLabel', t('langLabel'));
+        setText('themeLabel', t('themeLabel'));
         setText('title', t('title'));
         setText('inputSectionTitle', t('inputSectionTitle'));
         setText('sqlLabel', t('sqlLabel'));
@@ -716,6 +720,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const LS_LANG = 'sql2table.lang';
     const LS_SAVE_INPUT = 'sql2table.saveInput';
     const LS_INPUT = 'sql2table.input';
+    const LS_THEME = 'sql2table.theme';
 
     // Load persisted settings
     try {
@@ -728,6 +733,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const savedInput = localStorage.getItem(LS_INPUT);
             if (savedInput && sqlInput) sqlInput.value = savedInput;
         }
+        const savedTheme = localStorage.getItem(LS_THEME) || 'system';
+        if (themeSelect) themeSelect.value = savedTheme;
+        applyTheme(savedTheme);
     } catch (_) {}
 
     // language switching
@@ -758,6 +766,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // initial i18n on load
     applyI18n();
+
+    // Theme handling
+    function applyTheme(mode) {
+        const root = document.documentElement;
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        function setFromSystem() {
+            root.setAttribute('data-bs-theme', mq.matches ? 'dark' : 'light');
+        }
+        if (mode === 'dark' || mode === 'light') {
+            root.setAttribute('data-bs-theme', mode);
+            // remove listener if any
+            try { mq.removeEventListener('change', onMqlChange); } catch (_) {}
+        } else {
+            setFromSystem();
+            function onMqlChange() { setFromSystem(); }
+            try { mq.addEventListener('change', onMqlChange); } catch (_) {}
+        }
+    }
+
+    themeSelect?.addEventListener('change', () => {
+        const mode = themeSelect.value || 'system';
+        try { localStorage.setItem(LS_THEME, mode); } catch (_) {}
+        applyTheme(mode);
+    });
 
     function getSelected(groupedItems) {
         const sels = [];

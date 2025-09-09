@@ -14,15 +14,17 @@
         .output-section {
             margin-top: 20px;
             padding: 15px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--bs-border-color);
             border-radius: 5px;
+            background-color: var(--bs-body-bg);
         }
         pre {
-            background-color: #f8f9fa;
+            background-color: var(--bs-tertiary-bg);
             padding: 10px;
             border-radius: 5px;
             max-height: 300px;
             overflow-y: auto;
+            color: var(--bs-body-color);
         }
         h2 {
             margin-top: 30px;
@@ -42,6 +44,12 @@
                 <select id="langSelect" class="form-select form-select-sm" style="width: 140px;">
                     <option value="en" selected>English</option>
                     <option value="zh">中文</option>
+                </select>
+                <label id="themeLabel" for="themeSelect" class="form-label m-0">Theme</label>
+                <select id="themeSelect" class="form-select form-select-sm" style="width: 140px;">
+                    <option value="system" selected>System</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
                 </select>
             </div>
         </div>
