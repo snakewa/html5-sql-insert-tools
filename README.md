@@ -16,7 +16,7 @@ Note: This is a 100% client-side web app (pure HTML/JS). It requires no backend 
 ![Last Commit](https://img.shields.io/github/last-commit/snakewa/html5-sql-insert-tools)
 
 ## Live Demo
-
+![SQL to JSON/Table Converter screenshot](./screenshot.jpg)
 - URL: https://snakewa.github.io/html5-sql-insert-tools/
 
 ## Why 

@@ -16,7 +16,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/snakewa/html5-sql-insert-tools)
 
 ## 在线演示
-
+![SQL to JSON/Table Converter screenshot](./screenshot.jpg)
 - 网址：<https://snakewa.github.io/html5-sql-insert-tools/>
 
 ## 为什么
