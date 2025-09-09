@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const outputDiv = document.getElementById('output');
     const messagesDiv = document.getElementById('messages');
     const outputModeSel = document.getElementById('outputMode');
+    const langSelect = document.getElementById('langSelect');
+    const saveInputToggle = document.getElementById('saveInputToggle');
     const downloadJsonBtn = document.getElementById('downloadJsonBtn');
     const downloadCsvBtn = document.getElementById('downloadCsvBtn');
     const expandJsonToggle = document.getElementById('expandJsonToggle');
@@ -18,17 +20,124 @@ document.addEventListener('DOMContentLoaded', function() {
     const actionCopyBtn = document.getElementById('actionCopyBtn');
     const compareBtn = document.getElementById('compareBtn');
     const generateUpdateBtn = document.getElementById('generateUpdateBtn');
+    const jsonActionsSection = document.getElementById('jsonActionsSection');
+    const tableSection = document.getElementById('tableSection');
 
-    // state for downloads
+    // i18n
+    const I18N = {
+        en: {
+            langLabel: 'Language',
+            title: 'SQL to JSON/Table Converter',
+            inputSectionTitle: 'Input & Actions',
+            sqlLabel: 'Paste your SQL here (you can include CREATE TABLE and multiple INSERT statements):',
+            convert: 'Convert',
+            outputModeLabel: 'Output:',
+            outputGrouped: 'Grouped by Table',
+            outputFlat: 'Flat Array',
+            downloadJson: 'Download JSON',
+            downloadCsv: 'Download CSV',
+            jsonSectionTitle: 'Output: JSON Actions',
+            expandJsonLabel: 'Expand JSON values',
+            viewJson: 'View JSON',
+            copyJson: 'Copy JSON',
+            tableSectionTitle: 'Output: HTML Table',
+            compareSelected: 'Compare Selected',
+            generateUpdates: 'Generate UPDATEs',
+            mismatch: 'mismatch',
+            saveInputLabel: 'Save input in browser',
+            msgEnterSql: 'Please enter SQL input.',
+            msgParseError: 'Error parsing SQL: ',
+            msgNothingToDownload: 'Nothing to download yet. Convert some SQL first.',
+            msgJsonCopied: 'JSON copied to clipboard.',
+            msgCopyFailed: 'Failed to copy JSON: ',
+            msgNothingToView: 'Nothing to view yet. Convert some SQL first.',
+            msgContentCopied: 'Content copied to clipboard.',
+            msgCopyFailedGeneric: 'Failed to copy: ',
+            msgSelectTwo: 'Select exactly two rows to compare.',
+            msgSameTable: 'Please select rows from the same table to compare.',
+            msgSelectRowsForUpdate: 'Select one or more rows to generate UPDATE statements.',
+        },
+        zh: {
+            langLabel: '语言',
+            title: 'SQL 插入语句 ➜ JSON 与 HTML 表格',
+            inputSectionTitle: '输入与操作',
+            sqlLabel: '在此粘贴 SQL（可包含 CREATE TABLE 与多条 INSERT 语句）：',
+            convert: '转换',
+            outputModeLabel: '输出：',
+            outputGrouped: '按表分组',
+            outputFlat: '扁平数组',
+            downloadJson: '下载 JSON',
+            downloadCsv: '下载 CSV',
+            jsonSectionTitle: '输出：JSON 操作',
+            expandJsonLabel: '默认展开 JSON 值',
+            viewJson: '查看 JSON',
+            copyJson: '复制 JSON',
+            tableSectionTitle: '输出：HTML 表格',
+            compareSelected: '比较所选',
+            generateUpdates: '生成 UPDATE',
+            mismatch: '不匹配',
+            saveInputLabel: '在浏览器中保存输入',
+            msgEnterSql: '请输入 SQL。',
+            msgParseError: '解析错误：',
+            msgNothingToDownload: '暂无可下载内容，请先转换 SQL。',
+            msgJsonCopied: 'JSON 已复制到剪贴板。',
+            msgCopyFailed: '复制 JSON 失败：',
+            msgNothingToView: '暂无可查看内容，请先转换 SQL。',
+            msgContentCopied: '内容已复制到剪贴板。',
+            msgCopyFailedGeneric: '复制失败：',
+            msgSelectTwo: '请精确选择两行进行比较。',
+            msgSameTable: '请从同一张表中选择行进行比较。',
+            msgSelectRowsForUpdate: '请选择至少一行以生成 UPDATE 语句。',
+        }
+    };
+    let currentLang = (langSelect && langSelect.value) || 'en';
+
+    function t(key) { return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key; }
+
+    function applyI18n() {
+        const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+        setText('langLabel', t('langLabel'));
+        setText('title', t('title'));
+        setText('inputSectionTitle', t('inputSectionTitle'));
+        setText('sqlLabel', t('sqlLabel'));
+        const convertBtnEl = document.getElementById('convertBtn'); if (convertBtnEl) convertBtnEl.textContent = t('convert');
+        setText('outputModeLabel', t('outputModeLabel'));
+        // Output mode options
+        if (outputModeSel && outputModeSel.options && outputModeSel.options.length >= 2) {
+            outputModeSel.options[0].textContent = t('outputGrouped');
+            outputModeSel.options[1].textContent = t('outputFlat');
+        }
+        const dlJsonBtn = document.getElementById('downloadJsonBtn'); if (dlJsonBtn) dlJsonBtn.textContent = t('downloadJson');
+        const dlCsvBtn = document.getElementById('downloadCsvBtn'); if (dlCsvBtn) dlCsvBtn.textContent = t('downloadCsv');
+        setText('jsonSectionTitle', t('jsonSectionTitle'));
+        setText('expandJsonLabel', t('expandJsonLabel'));
+        const viewBtn = document.getElementById('viewJsonBtn'); if (viewBtn) viewBtn.textContent = t('viewJson');
+        const copyBtn = document.getElementById('copyJsonBtn'); if (copyBtn) copyBtn.textContent = t('copyJson');
+        setText('tableSectionTitle', t('tableSectionTitle'));
+        const cmpBtn = document.getElementById('compareBtn'); if (cmpBtn) cmpBtn.textContent = t('compareSelected');
+        const genBtn = document.getElementById('generateUpdateBtn'); if (genBtn) genBtn.textContent = t('generateUpdates');
+        const saveLabel = document.getElementById('saveInputLabel'); if (saveLabel) saveLabel.textContent = t('saveInputLabel');
+    }
     let lastFlatRows = [];
     let lastGrouped = {};
     let lastItems = [];
+
+    function setSectionVisible(visible) {
+        const method = visible ? 'remove' : 'add';
+        jsonActionsSection?.classList[method]('d-none');
+        tableSection?.classList[method]('d-none');
+        outputDiv?.classList[method]('d-none');
+    }
+
+    // Hide sections initially
+    setSectionVisible(false);
 
     convertBtn.addEventListener('click', function() {
         clearMessages();
         const sql = sqlInput.value.trim();
         if (!sql) {
-            addMessage('warning', 'Please enter SQL input.');
+            addMessage('warning', t('msgEnterSql'));
+            setSectionVisible(false);
             return;
         }
 
@@ -36,9 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const { items, warnings } = parseSQLInsert(sql);
             lastItems = items;
             displayResults(items, warnings);
+            setSectionVisible(true);
         } catch (error) {
-            addMessage('danger', 'Error parsing SQL: ' + error.message);
+            addMessage('danger', t('msgParseError') + error.message);
             console.error(error);
+            setSectionVisible(false);
         }
     });
 
@@ -51,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     downloadJsonBtn.addEventListener('click', () => {
         if (!lastFlatRows.length && !Object.keys(lastGrouped).length) {
-            addMessage('warning', 'Nothing to download yet. Convert some SQL first.');
+            addMessage('warning', t('msgNothingToDownload'));
             return;
         }
         const isGrouped = outputModeSel.value === 'grouped';
@@ -78,16 +189,16 @@ document.addEventListener('DOMContentLoaded', function() {
     copyJsonBtn?.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(jsonOutput.textContent || '');
-            addMessage('success', 'JSON copied to clipboard.');
+            addMessage('success', t('msgJsonCopied'));
         } catch (e) {
-            addMessage('danger', 'Failed to copy JSON: ' + (e?.message || e));
+            addMessage('danger', t('msgCopyFailed') + (e?.message || e));
         }
     });
 
     viewJsonBtn?.addEventListener('click', () => {
         const content = jsonOutput.textContent || '';
         if (!content) {
-            addMessage('warning', 'Nothing to view yet. Convert some SQL first.');
+            addMessage('warning', t('msgNothingToView'));
             return;
         }
         jsonModalBody.textContent = content;
@@ -104,9 +215,9 @@ document.addEventListener('DOMContentLoaded', function() {
     actionCopyBtn?.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(actionModalBody.textContent || '');
-            addMessage('success', 'Content copied to clipboard.');
+            addMessage('success', t('msgContentCopied'));
         } catch (e) {
-            addMessage('danger', 'Failed to copy: ' + (e?.message || e));
+            addMessage('danger', t('msgCopyFailedGeneric') + (e?.message || e));
         }
     });
 
@@ -528,7 +639,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.forEach((r, idx) => {
                 const tr = document.createElement('tr');
                 const item = groupedItems[tableName][idx];
-                const mismatchBadge = item && item.mismatch ? ' <span class="badge bg-warning text-dark">mismatch</span>' : '';
+                const mismatchBadge = item && item.mismatch ? ` <span class="badge bg-warning text-dark">${t('mismatch')}</span>` : '';
                 let html = `<td><input type="checkbox" class="form-check-input row-select" data-table="${tableName}" data-index="${idx}"></td>`;
                 html += `<td>${idx + 1}${mismatchBadge}</td>`;
                 allCols.forEach(c => {
@@ -576,12 +687,12 @@ document.addEventListener('DOMContentLoaded', function() {
         compareBtn?.addEventListener('click', () => {
             const selected = getSelected(groupedItems);
             if (selected.length !== 2) {
-                addMessage('warning', 'Select exactly two rows to compare.');
+                addMessage('warning', t('msgSelectTwo'));
                 return;
             }
             const [a, b] = selected;
             if (a.table !== b.table) {
-                addMessage('warning', 'Please select rows from the same table to compare.');
+                addMessage('warning', t('msgSameTable'));
                 return;
             }
             const diffText = diffRecords(a.data, b.data, a.table);
@@ -592,7 +703,7 @@ document.addEventListener('DOMContentLoaded', function() {
         generateUpdateBtn?.addEventListener('click', () => {
             const selected = getSelected(groupedItems);
             if (selected.length === 0) {
-                addMessage('warning', 'Select one or more rows to generate UPDATE statements.');
+                addMessage('warning', t('msgSelectRowsForUpdate'));
                 return;
             }
             const sqls = selected.map(it => buildUpdateSQL(it.table, it.data));
@@ -600,6 +711,53 @@ document.addEventListener('DOMContentLoaded', function() {
             try { new bootstrap.Modal(actionModalEl).show(); } catch (_) {}
         });
     }
+
+    // Persisted settings keys
+    const LS_LANG = 'sql2table.lang';
+    const LS_SAVE_INPUT = 'sql2table.saveInput';
+    const LS_INPUT = 'sql2table.input';
+
+    // Load persisted settings
+    try {
+        const savedLang = localStorage.getItem(LS_LANG);
+        if (savedLang && langSelect) langSelect.value = savedLang;
+        currentLang = (langSelect && langSelect.value) || currentLang;
+        const saveInput = localStorage.getItem(LS_SAVE_INPUT);
+        if (saveInputToggle) saveInputToggle.checked = saveInput === '1';
+        if (saveInputToggle && saveInputToggle.checked) {
+            const savedInput = localStorage.getItem(LS_INPUT);
+            if (savedInput && sqlInput) sqlInput.value = savedInput;
+        }
+    } catch (_) {}
+
+    // language switching
+    langSelect?.addEventListener('change', () => {
+        currentLang = langSelect.value || 'en';
+        try { localStorage.setItem(LS_LANG, currentLang); } catch (_) {}
+        applyI18n();
+        if (lastItems.length) displayResults(lastItems, []);
+    });
+
+    // input persistence toggle
+    saveInputToggle?.addEventListener('change', () => {
+        const on = !!saveInputToggle.checked;
+        try { localStorage.setItem(LS_SAVE_INPUT, on ? '1' : '0'); } catch (_) {}
+        if (!on) {
+            try { localStorage.removeItem(LS_INPUT); } catch (_) {}
+        } else if (on && sqlInput) {
+            try { localStorage.setItem(LS_INPUT, sqlInput.value || ''); } catch (_) {}
+        }
+    });
+
+    // save input on typing when enabled
+    sqlInput?.addEventListener('input', () => {
+        if (saveInputToggle && saveInputToggle.checked) {
+            try { localStorage.setItem(LS_INPUT, sqlInput.value || ''); } catch (_) {}
+        }
+    });
+
+    // initial i18n on load
+    applyI18n();
 
     function getSelected(groupedItems) {
         const sels = [];

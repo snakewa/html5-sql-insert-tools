@@ -1,6 +1,10 @@
 # SQL INSERT ➜ JSON + HTML Table
 
+English | [中文说明](README.zh.md)
+
 A lightweight web tool to convert SQL INSERT statements into JSON and a rendered HTML table. Supports multiple statements, schema inference from CREATE TABLE, inline validation, JSON previews, downloads, and more.
+
+Note: This is a 100% client-side web app (pure HTML/JS). It requires no backend and works perfectly on GitHub Pages.
 
 ## Features
 

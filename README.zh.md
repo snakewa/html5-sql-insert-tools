@@ -1,6 +1,10 @@
 # SQL INSERT ➜ JSON 与 HTML 表格
 
+[English README](README.md) | 中文说明
+
 一个轻量级 Web 工具，用于将 SQL INSERT 语句转换为 JSON 与可视化 HTML 表格。支持多语句、从 CREATE TABLE 推断列名、内联校验、JSON 预览、下载等功能。
+
+说明：本项目为 100% 纯前端（纯 HTML/JS），无需后端，适合 GitHub Pages 静态托管。
 
 ## 功能特点
 

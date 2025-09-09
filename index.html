@@ -35,19 +35,27 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">SQL to JSON/Table Converter</h1>
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1 id="title" class="m-0">SQL to JSON/Table Converter</h1>
+            <div class="d-flex align-items-center gap-2">
+                <label id="langLabel" for="langSelect" class="form-label m-0">Language</label>
+                <select id="langSelect" class="form-select form-select-sm" style="width: 140px;">
+                    <option value="en" selected>English</option>
+                    <option value="zh">中文</option>
+                </select>
+            </div>
+        </div>
 
         <!-- Section 1: Input & Actions -->
         <section class="mb-4">
-            <h2 class="h4 mb-3">Input & Actions</h2>
             <div class="mb-3">
-                <label for="sqlInput" class="form-label">Paste your SQL here (you can include CREATE TABLE and multiple INSERT statements):</label>
+                <label id="sqlLabel" for="sqlInput" class="form-label">Paste your SQL here (you can include CREATE TABLE and multiple INSERT statements):</label>
                 <textarea class="form-control" id="sqlInput" rows="8" placeholder="CREATE TABLE ...;&#10;INSERT INTO table_name (col1, col2, ...) VALUES (...), (...);"></textarea>
             </div>
             <div class="d-flex align-items-center gap-2 mb-2">
                 <button id="convertBtn" class="btn btn-primary">Convert</button>
                 <div class="ms-auto d-flex align-items-center gap-2">
-                    <label for="outputMode" class="form-label m-0">Output:</label>
+                    <label id="outputModeLabel" for="outputMode" class="form-label m-0">Output:</label>
                     <select id="outputMode" class="form-select form-select-sm" style="width: 180px;">
                         <option value="grouped" selected>Grouped by Table</option>
                         <option value="flat">Flat Array</option>
@@ -56,19 +64,27 @@
                     <button id="downloadCsvBtn" class="btn btn-outline-secondary btn-sm" type="button">Download CSV</button>
                 </div>
             </div>
+            <div class="d-flex align-items-center gap-2 mb-0">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="saveInputToggle">
+                    <label id="saveInputLabel" class="form-check-label" for="saveInputToggle">Save input in browser</label>
+                </div>
+            </div>
             <div id="messages" class="mb-0"></div>
+            
         </section>
 
-        <hr/>
+        
 
         <!-- Section 2: Output - JSON Actions -->
-        <section class="mb-4">
-            <h2 class="h4 mb-3">Output: JSON Actions</h2>
+        <section id="jsonActionsSection" class="mb-4 d-none">
+            <hr/>
+            <h2 id="jsonSectionTitle" class="h4 mb-3">Output: JSON Actions</h2>
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <div class="d-flex align-items-center gap-2">
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="expandJsonToggle">
-                        <label class="form-check-label" for="expandJsonToggle">Expand JSON values</label>
+                        <label id="expandJsonLabel" class="form-check-label" for="expandJsonToggle">Expand JSON values</label>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2">
@@ -81,14 +97,15 @@
                     <pre id="jsonOutput"></pre>
                 </div>
             </div>
+            <hr/>
         </section>
 
-        <hr/>
+        
 
         <!-- Section 3: Output - HTML Table -->
-        <section class="mb-4">
+        <section id="tableSection" class="mb-4 d-none">
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <h2 class="h4 m-0">Output: HTML Table</h2>
+                <h2 id="tableSectionTitle" class="h4 m-0">Output: HTML Table</h2>
                 <div class="d-flex align-items-center gap-2">
                     <button id="compareBtn" class="btn btn-sm btn-outline-secondary" type="button">Compare Selected</button>
                     <button id="generateUpdateBtn" class="btn btn-sm btn-outline-primary" type="button">Generate UPDATEs</button>
